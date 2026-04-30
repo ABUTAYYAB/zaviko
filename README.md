@@ -1,5 +1,8 @@
 # Demo site of a creative agency
 
+> [!note] 
+> Explore my [personal website's source code](https://github.com/Shatlyk1011/personal-website) - you may like it
+
 Adaptive and stylish landing page of a creative agency with modern animations and interactive components. The project is designed to create a vivid impression.
 ## Design
 - **[Figma](https://www.figma.com/design/65gFXT6dvNfDjkX5osjZbu/Untitled?node-id=5-2&t=zgqFDE8HGEajkIoE-1)**
