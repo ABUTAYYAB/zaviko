@@ -1,5 +1,7 @@
-import { FC, ReactNode, useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+'use client';
+
+import { FC, ReactNode } from 'react';
+import { motion } from 'framer-motion';
 
 interface Props {
   children: ReactNode;
@@ -7,19 +9,18 @@ interface Props {
   offset?: any;
 }
 
-const Index: FC<Props> = ({ children, classes, offset }) => {
-  const container = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: container,
-    offset: offset || ['end 0.9', 'start 0.9'],
-    smooth: 0,
-  });
-
-  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
+const SectionOpacity: FC<Props> = ({ children, classes }) => {
   return (
-    <motion.div className={classes} ref={container} style={{ opacity }}>
+    <motion.div
+      className={classes}
+      initial={{ opacity: 0.85, y: 15 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-40px' }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+    >
       {children}
     </motion.div>
   );
 };
-export default Index;
+
+export default SectionOpacity;

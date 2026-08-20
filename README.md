@@ -1,49 +1,79 @@
-# Demo site of a creative agency
+# Zaviko — Premium Digital Product & Engineering Agency
 
-> [!note] 
-> Explore my [personal website's source code](https://github.com/Shatlyk1011/personal-website) - you may like it
+> **Designing, engineering, and automating bespoke digital experiences for ambitious businesses.**
 
-Adaptive and stylish landing page of a creative agency with modern animations and interactive components. The project is designed to create a vivid impression.
-## Design
-- **[Figma](https://www.figma.com/design/65gFXT6dvNfDjkX5osjZbu/Untitled?node-id=5-2&t=zgqFDE8HGEajkIoE-1)**
-## Functionality
-- **Adaptive design**: optimized for different devices and screens.
-- **Animated sidebar menu**: smooth animations for opening and closing the menu.
-- **Smoke cursor**: spectacular smoky cursor for an additional wow effect.
-- **Request form**: ready-made form with interactive fields for sending requests.
-- **Animated components**: dynamic transitions and effects for components to liven up the interface.
+Zaviko is a high-performance digital studio website built with **Next.js 14 (App Router)**, **TypeScript**, **Tailwind CSS**, **Framer Motion**, **GSAP**, and **WebGL Fluid Simulation**.
 
-## Libraries
+---
 
-- **[TailwindCSS](https://tailwindcss.com/)** — a utility CSS framework for creating responsive interfaces.
-- **[GSAP](https://greensock.com/gsap/)** — a library for creating high-performance animations.
-- **[Framer Motion](https://www.framer.com/motion/)** — declarative animations and gestures for React components.
-- **[Lenis](https://github.com/darkroomengineering/lenis)** — custom scroll for smooth user experience.
-- **[Edil Ozi](https://github.com/Edil-ozi/edil-ozi)** — ready-made animated components for React applications.
-- **[shadcn/ui](https://ui.shadcn.dev/)** — a collection of interface components with full customization support.
+## ✨ Features
 
-## Running the project
+- **Dark-First Architectural Aesthetic**: Deep obsidian foundations (`#0B0910`, `#131119`, `#191622`) with hairline borders and lavender/violet illumination accents (`#CCC2DC`, `#A78BFA`).
+- **WebGL Fluid Cursor Simulation**: Real-time fluid dynamics canvas with performance optimization and mobile/reduced-motion guardrails.
+- **Mouse Parallax**: Multi-layered inertia physics on hero product previews with GSAP transforms.
+- **Lenis Smooth Scroll**: Native momentum scrolling with 1:1 wheel response.
+- **Interactive Case Studies**: 6 selected works with high-fidelity UI mockups (fintech order book, AI node graph, spatial 3D e-commerce, diagnostic waveforms).
+- **Interactive Services Matrix**: 6 capability pillars with expandable deliverable drawers.
+- **Process & Delivery Framework**: 5-step methodology with shared-layout spotlight hover physics.
+- **Verified Testimonials**: Realistic founder and executive reviews with measurable ROI badges.
+- **Project Scope Builder**: Multi-step booking questionnaire (`/book`) with Radix UI components.
+- **Centralized Data Architecture**: All content, navigation, and metrics configurable in `src/data/index.ts`.
 
- *Clone the repository and run* :
+---
 
-   ```bash
-   git clone https://github.com/Shatlyk1011/agency-website.git
-   ```
+## 🛠️ Tech Stack
 
-   ```
-   cd agency-website
-   ```
+- **Framework**: [Next.js 14](https://nextjs.org/) (App Router, Server Components)
+- **Language**: [TypeScript](https://www.typescriptlang.org/) (Strict mode)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) & [SASS](https://sass-lang.com/)
+- **Animation**: [Framer Motion 11](https://www.framer.com/motion/) & [GSAP 3](https://greensock.com/gsap/)
+- **Smooth Scroll**: [Lenis](https://github.com/darkroomengineering/lenis)
+- **Graphics**: WebGL Fragment & Vertex Shaders
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **UI Primitives**: [Radix UI](https://www.radix-ui.com/)
 
-   ```
-   npm i
-   ```
+---
 
-   ```
-   npm run dev
-   ```
+## 🚀 Getting Started
 
-## **Notes**
-**The smoke cursor is implemented using WebGL. On low-performance devices or outdated browsers, this effect may slow down the site or display incorrectly.** <br/> <br/>
-**To disable the cursor locally, go to the root page `app/page.tsx` and disable the ` <ShadowCursor />` component**
+```bash
+# 1. Install dependencies
+npm install
 
-This site is completely made using VW units (view width). [More](https://www.sitepoint.com/css-viewport-units-quick-start/)
+# 2. Start development server
+npm run dev
+
+# 3. Build for production
+npm run build
+
+# 4. Start production server
+npm start
+```
+
+---
+
+## 📁 Architecture & Directory Structure
+
+```
+src/
+├── app/                  # Next.js App Router (pages & server layout)
+│   ├── layout.tsx        # SEO metadata, Google Montserrat font, smooth scroll provider
+│   ├── page.tsx          # Main landing composition
+│   └── book/             # Project inquiry & scope questionnaire page
+├── components/           # Reusable UI & Providers
+│   ├── providers/        # SmoothScrollProvider (Lenis wrapper)
+│   ├── ServiceCard/      # Interactive capability row with expandable drawers
+│   ├── SidebarMenu/      # Slide-out drawer navigation
+│   └── ui/               # Button, SectionTitle, SectionOpacity, HoverCards, ShadowCursor
+├── composables/          # Inertia mouse parallax hooks (useFloatingImages)
+├── data/                 # Centralized agency data layer (single source of truth)
+├── shared/               # Global styles, SCSS tokens, WebGL fluid utilities
+└── widgets/              # Page sections (Navigation, Hero, Trust, Work, Services,
+                          # Capabilities, Approach, About, Testimonials, CallToAction, BookForm)
+```
+
+---
+
+## 📄 License
+
+Proprietary © 2026 Zaviko Digital Studio Inc. All rights reserved.

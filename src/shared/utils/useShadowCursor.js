@@ -1,22 +1,21 @@
 const initCursor = () => {
-  // anim setup || in an active project you can set this to the html body. however ive found a bound box to the viewport looks + performs better
   const canvas = document.getElementById('fluid');
+  if (!canvas) return;
   resizeCanvas();
 
   let config = {
     SIM_RESOLUTION: 128,
-    DYE_RESOLUTION: 1440,
+    DYE_RESOLUTION: 1024,
     CAPTURE_RESOLUTION: 512,
 
-    DENSITY_DISSIPATION: 3.5,
+    DENSITY_DISSIPATION: 2.5,
     VELOCITY_DISSIPATION: 1.5,
     PRESSURE: 0.1,
-    PRESSURE_ITERATIONS: 20,
-    CURL: 3,
+    PRESSURE_ITERATIONS: 14,
+    CURL: 4,
     SPLAT_RADIUS: 0.6,
     SPLAT_FORCE: 6500,
     SHADING: true,
-    // COLOR_UPDATE_SPEED: 1000,
     COLOR_UPDATE_SPEED: 10,
     PAUSED: false,
     BACK_COLOR: { r: 0, g: 0, b: 0 },
@@ -609,7 +608,6 @@ const initCursor = () => {
   let divergence;
   let curl;
   let pressure;
-  let ditheringTexture = createTextureAsync('../app/themes/flipp/dist/images/LDR_LLL1_0.png');
 
   const blurProgram = new Program(blurVertexShader, blurShader);
   const copyProgram = new Program(baseVertexShader, copyShader);
@@ -785,9 +783,12 @@ const initCursor = () => {
   let lastUpdateTime = Date.now();
   let colorUpdateTimer = 0.0;
 
+  if (pointers[0]) {
+    pointers[0].color = generateColor();
+  }
+
   function update() {
     const dt = calcDeltaTime();
-    // console.log(dt)
     if (resizeCanvas()) initFramebuffers();
     updateColors(dt);
     applyInputs();
@@ -795,6 +796,8 @@ const initCursor = () => {
     render(null);
     requestAnimationFrame(update);
   }
+
+  update();
 
   function calcDeltaTime() {
     let now = Date.now();
@@ -961,43 +964,13 @@ const initCursor = () => {
     clickSplat(pointer);
   });
 
-  document.body.addEventListener('mousemove', function handleFirstMouseMove(e) {
-    let pointer = pointers[0];
-    let posX = scaleByPixelRatio(e.clientX);
-    let posY = scaleByPixelRatio(e.clientY);
-    let color = generateColor();
-
-    update();
-    updatePointerMoveData(pointer, posX, posY, color);
-
-    // Remove this event listener after the first mousemove event
-    document.body.removeEventListener('mousemove', handleFirstMouseMove);
-  });
-
   window.addEventListener('mousemove', (e) => {
     let pointer = pointers[0];
     let posX = scaleByPixelRatio(e.clientX);
     let posY = scaleByPixelRatio(e.clientY);
     let color = pointer.color;
-
     updatePointerMoveData(pointer, posX, posY, color);
-  });
-
-  document.body.addEventListener('touchstart', function handleFirstTouchStart(e) {
-    const touches = e.targetTouches;
-    let pointer = pointers[0];
-
-    for (let i = 0; i < touches.length; i++) {
-      let posX = scaleByPixelRatio(touches[i].clientX);
-      let posY = scaleByPixelRatio(touches[i].clientY);
-
-      update();
-      updatePointerDownData(pointer, touches[i].identifier, posX, posY);
-    }
-
-    // Remove this event listener after the first touchstart event
-    document.body.removeEventListener('touchstart', handleFirstTouchStart);
-  });
+  }, { passive: true });
 
   window.addEventListener('touchstart', (e) => {
     const touches = e.targetTouches;
@@ -1007,7 +980,7 @@ const initCursor = () => {
       let posY = scaleByPixelRatio(touches[i].clientY);
       updatePointerDownData(pointer, touches[i].identifier, posX, posY);
     }
-  });
+  }, { passive: true });
 
   window.addEventListener(
     'touchmove',
@@ -1075,9 +1048,9 @@ const initCursor = () => {
 
   function generateColor() {
     let c = HSVtoRGB(Math.random(), 1.0, 1.0);
-    c.r *= 0.15;
-    c.g *= 0.15;
-    c.b *= 0.15;
+    c.r *= 0.22;
+    c.g *= 0.20;
+    c.b *= 0.28;
     return c;
   }
 
@@ -1135,7 +1108,7 @@ const initCursor = () => {
   }
 
   function scaleByPixelRatio(input) {
-    let pixelRatio = window.devicePixelRatio || 1;
+    let pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
     return Math.floor(input * pixelRatio);
   }
 

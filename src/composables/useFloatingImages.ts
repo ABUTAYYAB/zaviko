@@ -1,51 +1,55 @@
 import gsap from 'gsap';
 
-const useFloatingImages = (ref1: any, ref2: any, ref3: any) => {
-  let requestAnimationFrameId: any = null;
+const useFloatingImages = (...refs: any[]) => {
+  let requestAnimationFrameId: number | null = null;
   let xForce = 0;
   let yForce = 0;
-  const easing = 0.1;
-  const speed = 0.02;
+  const easing = 0.08;
+  const speed = 0.025;
 
-  const manageMouseMove = (e: any) => {
+  const manageMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    // Skip on touch/mobile
+    if (typeof window !== 'undefined' && window.innerWidth < 768) return;
+
     const { movementX, movementY } = e;
-    xForce = movementX * speed;
-    yForce = movementY * speed;
+    xForce = Math.max(-15, Math.min(15, (movementX || 0) * speed));
+    yForce = Math.max(-15, Math.min(15, (movementY || 0) * speed));
 
-    // console.log("manageMouseMove");
-
-    if (requestAnimationFrameId == null) {
+    if (requestAnimationFrameId === null) {
       requestAnimationFrameId = requestAnimationFrame(animate);
     }
   };
 
-  // make images auto movable "chat gpt?"
-  const lerp = (start: number, target: number, amount: number) => start * (1 - amount) + target * amount;
+  const lerp = (start: number, target: number, amount: number) =>
+    start * (1 - amount) + target * amount;
 
   const animate = () => {
     xForce = lerp(xForce, 0, easing);
     yForce = lerp(yForce, 0, easing);
-    gsap.set(ref1.current, {
-      x: `+=${xForce * 0.2}`,
-      y: `+=${yForce * 0.2}`,
-    });
-    gsap.set(ref2.current, {
-      x: `+=${xForce * 0.6}`,
-      y: `+=${yForce * 0.6}`,
-    });
-    gsap.set(ref3.current, {
-      x: `+=${xForce * 0.15}`,
-      y: `+=${yForce * 0.15}`,
+
+    const multipliers = [0.15, 0.45, 0.25, 0.6, 0.35];
+
+    refs.forEach((ref, index) => {
+      if (ref && ref.current) {
+        const mult = multipliers[index % multipliers.length];
+        gsap.set(ref.current, {
+          x: `+=${xForce * mult}`,
+          y: `+=${yForce * mult}`,
+          overwrite: 'auto',
+        });
+      }
     });
 
-    if (Math.abs(xForce) < 0.01) xForce = 0;
-    if (Math.abs(yForce) < 0.01) yForce = 0;
+    if (Math.abs(xForce) < 0.005) xForce = 0;
+    if (Math.abs(yForce) < 0.005) yForce = 0;
 
-    if (xForce != 0 || yForce != 0) {
-      requestAnimationFrame(animate);
+    if (xForce !== 0 || yForce !== 0) {
+      requestAnimationFrameId = requestAnimationFrame(animate);
     } else {
-      cancelAnimationFrame(requestAnimationFrameId);
-      requestAnimationFrameId = null;
+      if (requestAnimationFrameId !== null) {
+        cancelAnimationFrame(requestAnimationFrameId);
+        requestAnimationFrameId = null;
+      }
     }
   };
 

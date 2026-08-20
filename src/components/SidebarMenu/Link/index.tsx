@@ -1,21 +1,25 @@
 import { motion } from 'framer-motion';
 import { slide, scale } from '@/shared/utils/animations';
-
 import { FC } from 'react';
 
 interface Props {
-  data: any;
+  data: {
+    title: string;
+    href: string;
+    description?: string;
+    index: number;
+  };
   isActive: boolean;
-  setSelectedIndicator: any;
+  setSelectedIndicator: (href: string | null) => void;
   handleClick: () => void;
 }
 
-const Index: FC<Props> = ({ data, isActive, setSelectedIndicator, handleClick }) => {
-  const { title, href, index } = data;
+const CustomLink: FC<Props> = ({ data, isActive, setSelectedIndicator, handleClick }) => {
+  const { title, href, description, index } = data;
 
   return (
     <motion.div
-      className="relative flex items-center"
+      className="group relative flex flex-col py-2.5"
       onMouseEnter={() => setSelectedIndicator(href)}
       custom={index}
       variants={slide}
@@ -24,15 +28,26 @@ const Index: FC<Props> = ({ data, isActive, setSelectedIndicator, handleClick })
       exit="exit"
       onClick={handleClick}
     >
-      <motion.div
-        className="absolute left-0 inline-block h-[0.6vw] w-[0.6vw] rounded-full bg-white"
-        variants={scale}
-        animate={isActive ? 'open' : 'closed'}
-      ></motion.div>
-      <div tabIndex={0} className="cursor-pointer text-[2.5vw] md:text-[3vw] leading-[1.35] md:leading-[1.25] font-semibold tracking-wide duration-200  transition-[cubic-bezier(.16,1,.3,1)] hover:translate-x-[1.6vw]">
-        {title}
+      <div className="flex items-center space-x-3">
+        <motion.div
+          className="h-2 w-2 rounded-full bg-primary"
+          variants={scale}
+          animate={isActive ? 'open' : 'closed'}
+        />
+        <div
+          tabIndex={0}
+          className="cursor-pointer text-2xl font-medium tracking-tight text-text-1 transition-all duration-300 group-hover:translate-x-2 group-hover:text-primary sm:text-3xl"
+        >
+          {title}
+        </div>
       </div>
+      {description && (
+        <span className="ml-5 text-xs text-text-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          {description}
+        </span>
+      )}
     </motion.div>
   );
 };
-export default Index;
+
+export default CustomLink;
